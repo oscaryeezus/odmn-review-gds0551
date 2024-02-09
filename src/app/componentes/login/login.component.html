@@ -1,4 +1,4 @@
-<form [formGroup]="loginForm">
+<form [formGroup]="loginForm" (ngSubmit)="login()">
     <p-card header="Ingresar" [style]="{width:'400px'}">
         <div class="field">
             <label for="email">Correo Electronico</label>
@@ -9,9 +9,9 @@
             class="w-full" 
             placeholder="Ingresar Email">
         </div>
-        <small *ngIf="email.invalid && (email.dirty || email.touched)">
-            <div *ngIf="email.hasError('required')">Se requiere Email</div>
-            <div *ngIf="email.hasError('email')">Correo incorrecto</div>
+        <small *ngIf="email.invalid && (email.dirty || email.touched)" class="block p-error">
+            <div *ngIf="email.errors?.['required']">Se requiere Email</div>
+            <div *ngIf="email.errors?.['email']">Email debe ser valido pa</div>
         </small>
 
         <div class="field">
@@ -21,16 +21,21 @@
             class="w-full"
             placeholder="Ingresa tu Contraseña"></p-password>
         </div>
-        <small *ngIf="password.invalid && (password.dirty || password.touched)">
-            <div *ngIf="password.hasError('required')">Se requiere una contraseña</div>
-            <div *ngIf="password.hasError('password')">Contraseña incorrecta :/</div>
+        <small *ngIf="password.invalid && (password.dirty || password.touched)" class="block p-error">
+            <div *ngIf="password.errors?.['required']">Se requiere una contraseña</div>
+            <div *ngIf="password.errors?.['password']">Contraseña incorrecta :/</div>
         </small>
         
 
-        <p-button class="w-full">Ingresar</p-button>
+        <p-button 
+            label="Ingresar" 
+            styleClass="w-full" 
+            [disabled]="loginForm.invalid"
+            type="submit"    
+        ></p-button>
 
         <div class="mt-2">
-            Ya tienes cuenta?? <a [routerLink]="['/register']">Registrar</a>
+            ¿Ya tienes cuenta? <a [routerLink]="['/register']">Registrar</a>
         </div>
 
     </p-card>

@@ -12,6 +12,7 @@ import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { ReactiveFormsModule } from '@angular/forms';
 import { MessageService } from 'primeng/api';
 
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -25,9 +26,11 @@ import { MessageService } from 'primeng/api';
     PrimengModule,
     BrowserAnimationsModule,
     HttpClientModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    BrowserAnimationsModule
   ],
   providers: [
+    MessageService,
     provideClientHydration()
   ],
   bootstrap: [AppComponent]
