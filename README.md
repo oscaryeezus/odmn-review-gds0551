@@ -26,3 +26,20 @@ Clona este repositorio en tu máquina local:
 git clone https://github.com/oscaryeezus/odmn-review-gds0551.git
 cd OdmnReviewGds0551
 ```
+
+Instala las dependencias del proyecto:
+
+```bash
+npm install
+```
+##Uso
+Para iniciar la aplicación Angular y levantar el servidor json-server, puedes ejecutar los siguientes comandos:
+
+```bash
+# Iniciar el servidor json-server (en una terminal separada)
+json-server --watch db.json
+
+# Iniciar la aplicación Angular
+ng serve
+```
+Después de ejecutar estos comandos, puedes acceder a la aplicación en tu navegador visitando http://localhost:4200/.
