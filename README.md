@@ -32,7 +32,8 @@ Instala las dependencias del proyecto:
 ```bash
 npm install
 ```
-##Uso
+## Uso
+
 Para iniciar la aplicación Angular y levantar el servidor json-server, puedes ejecutar los siguientes comandos:
 
 ```bash
