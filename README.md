@@ -16,3 +16,11 @@ npm install -g @angular/cli
 
 # Instalar json-server globalmente (si no lo tienes instalado)
 npm install -g json-server
+
+## Configuración
+
+Clona este repositorio en tu máquina local:
+
+```bash
+git clone <URL del repositorio>
+cd OdmnReviewGds0551
