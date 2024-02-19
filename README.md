@@ -23,6 +23,6 @@ npm install -g json-server
 Clona este repositorio en tu máquina local:
 
 ```bash
-git clone <URL del repositorio>
+git clone https://github.com/oscaryeezus/odmn-review-gds0551.git
 cd OdmnReviewGds0551
 ```
