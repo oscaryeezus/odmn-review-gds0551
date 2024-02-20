@@ -4,27 +4,24 @@ import { AuthService } from '../../services/auth.service';
 import { MessageService } from 'primeng/api';
 import { Router } from '@angular/router';
 
-
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
-  styleUrl: './login.component.css'
+  styleUrls: ['./login.component.css']
 })
 export class LoginComponent {
   
   loginForm = this.fb.group({
     email: ['',[Validators.required,Validators.email]],
-    password: ['',[Validators.required, Validators.pattern(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/)]]
+    password: ['',[Validators.required]]
   })
 
   constructor(
-      private fb:FormBuilder,
-      private authService: AuthService,
-      private messangeService: MessageService,
-      private router: Router
-    ){
-
-  }
+    private fb: FormBuilder,
+    private authService: AuthService,
+    private messageService: MessageService,
+    private router: Router
+  ) {}
 
   get email(){
     return this.loginForm.controls['email']
@@ -34,22 +31,34 @@ export class LoginComponent {
     return this.loginForm.controls['password']
   }
 
-  login(){
+  async login(){
     console.log('Login')
-    const {email, password} = this.loginForm.value;
-    
-    this.authService.getUserEmail(email as string).subscribe(
-      response => {
-        if(response.length > 0 && response[0].password === password){
-          sessionStorage.setItem('email',email as string);
-          this.router.navigate(['/home']);
-        } else {
-          this.messangeService.add({severity: 'error', summary: 'Error', detail: 'Email o Contraseña Incorrecta'})
-        }
-      },
-      error => {
-        this.messangeService.add({severity: 'error', summary:'Error', detail:'Email o Contraseña Incorrecta'})
-      }
-    )
+    if (this.loginForm.valid) {
+      const { email, password } = this.loginForm.value;
+      if (typeof password === 'string') {
+        const hashedPassword = await this.hashPassword(password);
+  
+        this.authService.getUserEmail(email as string).subscribe(
+          (response: any) => {
+            if (response.length > 0 && response[0].password === hashedPassword) {
+              sessionStorage.setItem('email', email as string);
+              this.router.navigate(['/home']);
+            } else {this.messageService.add({severity: 'error', summary: 'Error', detail: 'Email o Contraseña Incorrecta'})}
+          },
+          error => {this.messageService.add({severity: 'error', summary: 'Error', detail: 'Email o Contraseña Incorrecta'})}
+        );
+      } else {this.messageService.add({severity: 'error', summary: 'Error', detail: 'Contraseña no válida'});}
+    }
+  }
+  
+  
+
+  async hashPassword(password: string): Promise<string> {
+    const encoder = new TextEncoder();
+    const data = encoder.encode(password);
+    const hashBuffer = await window.crypto.subtle.digest('SHA-256', data);
+    const hashArray = Array.from(new Uint8Array(hashBuffer));
+    const hashedPassword = hashArray.map(byte => byte.toString(16).padStart(2, '0')).join('');
+    return hashedPassword;
   }
 }
